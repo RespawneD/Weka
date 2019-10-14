@@ -7,6 +7,8 @@ init_all:
 init_compile:
 
 compile:
+    [javac] Compiling 1 source file to D:\Projects\Java\Weka\build\classes
+    [javac] Support for javac --release has been added in Java9 ignoring it
     [unzip] Expanding: D:\Projects\Java\Weka\lib\java-cup.jar into D:\Projects\Java\Weka\build\classes
     [unzip] Expanding: D:\Projects\Java\Weka\lib\bounce.jar into D:\Projects\Java\Weka\build\classes
     [unzip] Expanding: D:\Projects\Java\Weka\lib\commons-compress-1.18.jar into D:\Projects\Java\Weka\build\classes
@@ -16,6 +18,7 @@ compile:
 init_dist:
 
 exejar:
+      [jar] Building jar: D:\Projects\Java\Weka\dist\weka.jar
 
 BUILD SUCCESSFUL
-Total time: 2 seconds
+Total time: 4 seconds
