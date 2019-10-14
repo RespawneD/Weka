@@ -1,0 +1,21 @@
+Buildfile: D:\Projects\Java\Weka\build.xml
+     [echo] Packages present: false
+     [echo] RemoteEngine present: true
+
+init_all:
+
+init_compile:
+
+compile:
+    [unzip] Expanding: D:\Projects\Java\Weka\lib\java-cup.jar into D:\Projects\Java\Weka\build\classes
+    [unzip] Expanding: D:\Projects\Java\Weka\lib\bounce.jar into D:\Projects\Java\Weka\build\classes
+    [unzip] Expanding: D:\Projects\Java\Weka\lib\commons-compress-1.18.jar into D:\Projects\Java\Weka\build\classes
+    [unzip] Expanding: D:\Projects\Java\Weka\lib\jfilechooser-bookmarks-0.1.6.jar into D:\Projects\Java\Weka\build\classes
+    [unzip] Expanding: D:\Projects\Java\Weka\lib\jclipboardhelper-0.1.2.jar into D:\Projects\Java\Weka\build\classes
+
+init_dist:
+
+exejar:
+
+BUILD SUCCESSFUL
+Total time: 2 seconds
