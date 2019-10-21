@@ -100,12 +100,6 @@ public class Id3Modifie
 
   private double _alpha = 0.1;
 
-  public Id3Modifie(){}
-  public Id3Modifie(double alpha)
-  {
-    setAlpha(alpha);
-  }
-
   /**
    * Returns a string describing the classifier.
    * @return a description suitable for the GUI.
@@ -152,12 +146,6 @@ public class Id3Modifie
    public double getAlpha() {
        return _alpha;
    }
-
-
-
-
-
-
 
 
   /**
@@ -242,7 +230,8 @@ public class Id3Modifie
       Instances[] splitData = splitData(data, m_Attribute);
       m_Successors = new Id3Modifie[m_Attribute.numValues()];
       for (int j = 0; j < m_Attribute.numValues(); j++) {
-        m_Successors[j] = new Id3Modifie(getAlpha());
+        m_Successors[j] = new Id3Modifie();
+        m_Successors[j].setAlpha(getAlpha()); // keep alpha
         m_Successors[j].makeTree(splitData[j]);
       }
     }
@@ -302,7 +291,7 @@ public class Id3Modifie
     if ((m_Distribution == null) && (m_Successors == null)) {
       return "Id3: No model built yet.";
     }
-    return "Id3 : Alpha = " + getAlpha() + "\n\n" + toString(0);
+    return "Id3: \n\n +" + toString(0) + "\n\n\tAlpha = " + getAlpha();
   }
 
   /**
@@ -316,15 +305,13 @@ public class Id3Modifie
   private double computeInfoGain(Instances data, Attribute att) 
     throws Exception {
 
-    double alpha = getAlpha();
-
-    double infoGain = computeEntropy(data, alpha);
+    double infoGain = computeEntropy(data);
     Instances[] splitData = splitData(data, att);
     for (int j = 0; j < att.numValues(); j++) {
       if (splitData[j].numInstances() > 0) {
         infoGain -= ((double) splitData[j].numInstances() /
                      (double) data.numInstances()) *
-          computeEntropy(splitData[j], alpha);
+          computeEntropy(splitData[j]);
       }
     }
     return infoGain;
@@ -337,10 +324,10 @@ public class Id3Modifie
    * @return the entropy of the data's class distribution
    * @throws Exception if computation fails
    */
-  private double computeEntropy(Instances data, double alpha) throws Exception {
+  private double computeEntropy(Instances data) throws Exception {
 
 
-    System.out.println("Alpha = " + alpha);
+    //System.out.println("Alpha = " + alpha);
 
 
     double [] classCounts = new double[data.numClasses()];
@@ -352,13 +339,12 @@ public class Id3Modifie
     double entropy = 0;
 
 
-    double k = Math.pow((Math.pow(2., 1. - alpha) - 1.), -1.);
+    double k = Math.pow((Math.pow(2.0, 1.0 - getAlpha()) - 1.0), -1.0);
 
     for (int j = 0; j < data.numClasses(); j++) {
       if(classCounts[j] > 0)
       {
-        entropy += Math.pow(classCounts[j], alpha)-1;
-        
+        entropy += Math.pow(classCounts[j], getAlpha()) - 1.0;      
       }
         
     }
