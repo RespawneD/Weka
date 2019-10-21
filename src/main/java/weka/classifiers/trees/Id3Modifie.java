@@ -320,16 +320,16 @@ public class Id3Modifie
     }
     double entropy = 0;
 
-    double k = 1/(java.lang.Math.pow(2, 1 - a) - 1);
+    double k = java.lang.Math.pow((java.lang.Math.pow(2, 1 - a) - 1), -1);
 
     for (int j = 0; j < data.numClasses(); j++) {
       if (classCounts[j] > 0) {
-        entropy += java.lang.Math.pow(classCounts[j], a);
+        entropy += java.lang.Math.pow(classCounts[j], a)-1;
       }
     }
 
 
-    return (entropy - 1) * k;
+    return entropy * k;
 
 
 
