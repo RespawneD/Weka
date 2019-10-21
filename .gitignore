@@ -5,3 +5,7 @@ datasource/kddcup.data.gz
 datasource/kddcup.data.zip
 datasource/kddcuptest.arff
 log.txt
+build/classes/weka/classifiers/trees/Id3Modifie.class
+dist/weka.jar
+log.txt
+src/main/java/weka/classifiers/trees/Id3Modifie.java

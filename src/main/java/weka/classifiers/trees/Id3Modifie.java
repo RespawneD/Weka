@@ -289,7 +289,7 @@ public class Id3Modifie
     throws Exception {
 
 
-    double alpha = 0.1;
+    double alpha = 0.3;
 
     double infoGain = computeEntropy(data, alpha);
     Instances[] splitData = splitData(data, att);
