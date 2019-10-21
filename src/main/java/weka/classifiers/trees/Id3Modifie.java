@@ -288,13 +288,16 @@ public class Id3Modifie
   private double computeInfoGain(Instances data, Attribute att) 
     throws Exception {
 
-    double infoGain = computeEntropy(data);
+
+    double alpha = 0.1;
+
+    double infoGain = computeEntropy(data, alpha);
     Instances[] splitData = splitData(data, att);
     for (int j = 0; j < att.numValues(); j++) {
       if (splitData[j].numInstances() > 0) {
         infoGain -= ((double) splitData[j].numInstances() /
                      (double) data.numInstances()) *
-          computeEntropy(splitData[j]);
+          computeEntropy(splitData[j], alpha);
       }
     }
     return infoGain;
@@ -307,7 +310,7 @@ public class Id3Modifie
    * @return the entropy of the data's class distribution
    * @throws Exception if computation fails
    */
-  private double computeEntropy(Instances data) throws Exception {
+  private double computeEntropy(Instances data, double a) throws Exception {
 
     double [] classCounts = new double[data.numClasses()];
     Enumeration instEnum = data.enumerateInstances();
@@ -316,13 +319,23 @@ public class Id3Modifie
       classCounts[(int) inst.classValue()]++;
     }
     double entropy = 0;
+
+    double k = 1/(java.lang.Math.pow(2, 1 - a) - 1);
+
     for (int j = 0; j < data.numClasses(); j++) {
       if (classCounts[j] > 0) {
-        entropy -= classCounts[j] * Utils.log2(classCounts[j]);
+        entropy += java.lang.Math.pow(classCounts[j], a);
       }
     }
-    entropy /= (double) data.numInstances();
-    return entropy + Utils.log2(data.numInstances());
+
+
+    return (entropy - 1) * k;
+
+
+
+
+
+
   }
 
   /**
