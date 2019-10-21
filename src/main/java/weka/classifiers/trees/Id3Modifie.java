@@ -24,6 +24,7 @@ package weka.classifiers.trees;
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.Sourcable;
+import weka.core.OptionMetadata;
 import weka.core.Attribute;
 import weka.core.Capabilities;
 import weka.core.Instance;
@@ -97,6 +98,14 @@ public class Id3Modifie
   /** Class attribute of dataset. */
   private Attribute m_ClassAttribute;
 
+  private double _alpha = 0.1;
+
+  public Id3Modifie(){}
+  public Id3Modifie(double alpha)
+  {
+    setAlpha(alpha);
+  }
+
   /**
    * Returns a string describing the classifier.
    * @return a description suitable for the GUI.
@@ -131,6 +140,25 @@ public class Id3Modifie
     
     return result;
   }
+
+  @OptionMetadata(displayName = "Alpha", description = "Alpha value.",
+                   commandLineParamName = "a", commandLineParamSynopsis = "-a <double>", displayOrder = 1)
+
+
+   public void setAlpha(double alpha) {
+       _alpha = alpha;
+   }
+
+   public double getAlpha() {
+       return _alpha;
+   }
+
+
+
+
+
+
+
 
   /**
    * Returns default capabilities of the classifier.
@@ -214,7 +242,7 @@ public class Id3Modifie
       Instances[] splitData = splitData(data, m_Attribute);
       m_Successors = new Id3Modifie[m_Attribute.numValues()];
       for (int j = 0; j < m_Attribute.numValues(); j++) {
-        m_Successors[j] = new Id3Modifie();
+        m_Successors[j] = new Id3Modifie(getAlpha());
         m_Successors[j].makeTree(splitData[j]);
       }
     }
@@ -274,7 +302,7 @@ public class Id3Modifie
     if ((m_Distribution == null) && (m_Successors == null)) {
       return "Id3: No model built yet.";
     }
-    return "Id3\n\n" + toString(0);
+    return "Id3 : Alpha = " + getAlpha() + "\n\n" + toString(0);
   }
 
   /**
@@ -288,8 +316,7 @@ public class Id3Modifie
   private double computeInfoGain(Instances data, Attribute att) 
     throws Exception {
 
-
-    double alpha = 0.3;
+    double alpha = getAlpha();
 
     double infoGain = computeEntropy(data, alpha);
     Instances[] splitData = splitData(data, att);
@@ -310,7 +337,11 @@ public class Id3Modifie
    * @return the entropy of the data's class distribution
    * @throws Exception if computation fails
    */
-  private double computeEntropy(Instances data, double a) throws Exception {
+  private double computeEntropy(Instances data, double alpha) throws Exception {
+
+
+    System.out.println("Alpha = " + alpha);
+
 
     double [] classCounts = new double[data.numClasses()];
     Enumeration instEnum = data.enumerateInstances();
@@ -320,12 +351,16 @@ public class Id3Modifie
     }
     double entropy = 0;
 
-    double k = java.lang.Math.pow((java.lang.Math.pow(2, 1 - a) - 1), -1);
+
+    double k = Math.pow((Math.pow(2., 1. - alpha) - 1.), -1.);
 
     for (int j = 0; j < data.numClasses(); j++) {
-      if (classCounts[j] > 0) {
-        entropy += java.lang.Math.pow(classCounts[j], a)-1;
+      if(classCounts[j] > 0)
+      {
+        entropy += Math.pow(classCounts[j], alpha)-1;
+        
       }
+        
     }
 
 
