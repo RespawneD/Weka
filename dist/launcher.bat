@@ -1,1 +1,1 @@
-java -Xmx12G -Xms6G -jar weka.jar
+java -Xmx10G -Xms10G -jar weka.jar 2> nul
